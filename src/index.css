@@ -7,16 +7,16 @@
   --font-sans: "Satoshi", "Geist Variable", sans-serif;
   --font-serif: "Instrument Serif", ui-serif, Georgia, serif;
 
-  /* Color Remapping for Diginurture Agency Emerald-Teal-Lime Custom Scheme */
-  --color-midnight: #020906; /* Green-black background base */
-  --color-navy: #03140e;     /* Very deep green-teal shade */
-  --color-indigo: #07251a;   /* Dark emerald forest */
-  --color-storm: #0b3626;    /* Dark emerald accent */
-  --color-aqua: #10b981;     /* Primary brand color - Emerald Green */
-  --color-mint: #00f5d4;     /* Secondary brand color - Bright Mint */
-  --color-royal: #06b6d4;    /* Accent color - Neon Teal/Cyan */
-  --color-lavender: #0d9488; /* Muted Accent - Deep Teal */
-  --color-fuchsia: #a3e635;  /* Secondary Brand Highlight - Neon Lime */
+  /* Color Remapping for Diginurture Agency Slate Navy & Royal Blue Theme */
+  --color-midnight: #070a13; /* Obsidian Navy background base */
+  --color-navy: #0e1322;     /* Very deep charcoal-navy shade */
+  --color-indigo: #171e30;   /* Graphite Navy */
+  --color-storm: #20293d;    /* Cool Slate Navy accent */
+  --color-aqua: #3b82f6;     /* Primary brand color - Royal Blue */
+  --color-mint: #60a5fa;     /* Secondary brand color - Ice Blue */
+  --color-royal: #4f46e5;    /* Accent color - Deep Indigo */
+  --color-lavender: #818cf8; /* Muted Accent - Slate Lavender */
+  --color-fuchsia: #94a3b8;  /* Secondary Brand Highlight - Warm Silver/Platinum */
 
   --animate-orbit: orbit 25s linear infinite;
   --animate-float: float 4s ease-in-out infinite;
@@ -142,7 +142,7 @@ body {
 
 .grid-black-color {
   border-radius: 1.8rem;
-  background-image: linear-gradient(to top left, #1c2e27, #0b1a15, #1c2e27);
+  background-image: linear-gradient(to top left, #111b2d, #070d18, #111b2d);
   padding: 1.5rem;
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
@@ -176,12 +176,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(16, 185, 129, 0.2);
+  background: rgba(59, 130, 246, 0.2);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(16, 185, 129, 0.4);
+  background: rgba(59, 130, 246, 0.4);
 }
 
 /* Glowing Border Cards (Timeline Section) */
@@ -199,7 +199,7 @@ body {
   transform: translateZ(0.01px);
   display: grid;
   border: 1px solid rgba(255, 255, 255, 0.15);
-  background: var(--card-bg, #0b1c15);
+  background: var(--card-bg, #0a1222);
   overflow: visible;
   box-shadow: rgba(0, 0, 0, 0.25) 0 1px 2px,
               rgba(0, 0, 0, 0.2) 0 4px 8px,
@@ -226,16 +226,16 @@ body {
 
 .border-glow-card:before {
   border: 1px solid transparent;
-  background: linear-gradient(var(--card-bg, #0b1c15) 0 100%) padding-box,
+  background: linear-gradient(var(--card-bg, #0a1222) 0 100%) padding-box,
               linear-gradient(transparent 0% 100%) border-box,
-              var(--gradient-one, radial-gradient(at 80% 55%, hsla(160, 100%, 76%, 1) 0px, transparent 50%)) border-box,
-              var(--gradient-two, radial-gradient(at 69% 34%, hsla(180, 100%, 74%, 1) 0px, transparent 50%)) border-box,
-              var(--gradient-three, radial-gradient(at 8% 6%, hsla(140, 100%, 78%, 1) 0px, transparent 50%)) border-box,
-              var(--gradient-four, radial-gradient(at 41% 38%, hsla(190, 100%, 64%, 1) 0px, transparent 50%)) border-box,
-              var(--gradient-five, radial-gradient(at 86% 85%, hsla(170, 100%, 74%, 1) 0px, transparent 50%)) border-box,
-              var(--gradient-six, radial-gradient(at 82% 18%, hsla(150, 100%, 65%, 1) 0px, transparent 50%)) border-box,
-              var(--gradient-seven, radial-gradient(at 51% 4%, hsla(165, 100%, 72%, 1) 0px, transparent 50%)) border-box,
-              var(--gradient-base, linear-gradient(#10b981 0 100%)) border-box;
+              var(--gradient-one, radial-gradient(at 80% 55%, hsla(220, 100%, 76%, 1) 0px, transparent 50%)) border-box,
+              var(--gradient-two, radial-gradient(at 69% 34%, hsla(240, 100%, 74%, 1) 0px, transparent 50%)) border-box,
+              var(--gradient-three, radial-gradient(at 8% 6%, hsla(260, 100%, 78%, 1) 0px, transparent 50%)) border-box,
+              var(--gradient-four, radial-gradient(at 41% 38%, hsla(200, 100%, 64%, 1) 0px, transparent 50%)) border-box,
+              var(--gradient-five, radial-gradient(at 86% 85%, hsla(230, 100%, 74%, 1) 0px, transparent 50%)) border-box,
+              var(--gradient-six, radial-gradient(at 82% 18%, hsla(250, 100%, 65%, 1) 0px, transparent 50%)) border-box,
+              var(--gradient-seven, radial-gradient(at 51% 4%, hsla(210, 100%, 72%, 1) 0px, transparent 50%)) border-box,
+              var(--gradient-base, linear-gradient(#3b82f6 0 100%)) border-box;
   opacity: calc((var(--edge-proximity) - var(--color-sensitivity)) / (100 - var(--color-sensitivity)));
   -webkit-mask-image: conic-gradient(from var(--cursor-angle) at center, black calc(var(--cone-spread) * 1%), transparent calc((var(--cone-spread) + 15) * 1%), transparent calc((100 - var(--cone-spread) - 15) * 1%), black calc((100 - var(--cone-spread)) * 1%));
   mask-image: conic-gradient(from var(--cursor-angle) at center, black calc(var(--cone-spread) * 1%), transparent calc((var(--cone-spread) + 15) * 1%), transparent calc((100 - var(--cone-spread) - 15) * 1%), black calc((100 - var(--cone-spread)) * 1%));
@@ -247,10 +247,10 @@ body {
               var(--gradient-two, radial-gradient(at 69% 34%, hsla(180, 100%, 74%, 1) 0px, transparent 50%)) padding-box,
               var(--gradient-three, radial-gradient(at 8% 6%, hsla(140, 100%, 78%, 1) 0px, transparent 50%)) padding-box,
               var(--gradient-four, radial-gradient(at 41% 38%, hsla(190, 100%, 64%, 1) 0px, transparent 50%)) padding-box,
-              var(--gradient-five, radial-gradient(at 86% 85%, hsla(170, 100%, 74%, 1) 0px, transparent 50%)) padding-box,
-              var(--gradient-six, radial-gradient(at 82% 18%, hsla(150, 100%, 65%, 1) 0px, transparent 50%)) padding-box,
-              var(--gradient-seven, radial-gradient(at 51% 4%, hsla(165, 100%, 72%, 1) 0px, transparent 50%)) padding-box,
-              var(--gradient-base, linear-gradient(#10b981 0 100%)) padding-box;
+              var(--gradient-five, radial-gradient(at 86% 85%, hsla(230, 100%, 74%, 1) 0px, transparent 50%)) padding-box,
+              var(--gradient-six, radial-gradient(at 82% 18%, hsla(250, 100%, 65%, 1) 0px, transparent 50%)) padding-box,
+              var(--gradient-seven, radial-gradient(at 51% 4%, hsla(210, 100%, 72%, 1) 0px, transparent 50%)) padding-box,
+              var(--gradient-base, linear-gradient(#3b82f6 0 100%)) padding-box;
   -webkit-mask-image: linear-gradient(to bottom, #000, #000), radial-gradient(ellipse at 50% 50%, black 40%, transparent 65%), conic-gradient(from var(--cursor-angle) at center, transparent 5%, black 15%, black 85%, transparent 95%);
   mask-image: linear-gradient(to bottom, #000, #000), radial-gradient(ellipse at 50% 50%, black 40%, transparent 65%), conic-gradient(from var(--cursor-angle) at center, transparent 5%, black 15%, black 85%, transparent 95%);
   -webkit-mask-composite: source-out, source-over;

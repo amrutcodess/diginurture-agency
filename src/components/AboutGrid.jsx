@@ -114,9 +114,9 @@ const GLOBE_CONFIG = {
   diffuse: 1.2,
   mapSamples: 12000,
   mapBrightness: 6,
-  baseColor: [0.03, 0.11, 0.08], // Deep emerald/forest green
-  markerColor: [0, 0.96, 0.83],    // Bright mint green markers
-  glowColor: [0.06, 0.72, 0.5],    // Teal/emerald glowing aura
+  baseColor: [0.03, 0.05, 0.12], // Deep navy-slate
+  markerColor: [0.23, 0.51, 0.96], // Cool royal blue markers
+  glowColor: [0.06, 0.25, 0.6],    // Soft blue glowing aura
   markers: [
     { location: [20.5937, 78.9629], size: 0.1 },  // India
     { location: [40.7128, -74.006], size: 0.08 },  // New York

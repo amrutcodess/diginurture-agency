@@ -78,8 +78,8 @@ uniform vec3 lineGradient[8];
 uniform int lineGradientCount;
 
 const vec3 BLACK   = vec3(0.0);
-const vec3 EMERALD = vec3(16.0, 185.0, 129.0) / 255.0;
-const vec3 TEAL    = vec3(6.0,  182.0, 212.0) / 255.0;
+const vec3 BLUE    = vec3(59.0, 130.0, 246.0) / 255.0;
+const vec3 INDIGO  = vec3(79.0, 70.0, 229.0) / 255.0;
 
 mat2 rotate(float r) {
   return mat2(cos(r), sin(r), -sin(r), cos(r));
@@ -91,8 +91,8 @@ vec3 background_color(vec2 uv) {
   float y = sin(uv.x - 0.2) * 0.3 - 0.1;
   float m = uv.y - y;
 
-  col += mix(TEAL, BLACK, smoothstep(0.0, 1.0, abs(m)));
-  col += mix(EMERALD, BLACK, smoothstep(0.0, 1.0, abs(m - 0.8)));
+  col += mix(BLUE, BLACK, smoothstep(0.0, 1.0, abs(m)));
+  col += mix(INDIGO, BLACK, smoothstep(0.0, 1.0, abs(m - 0.8)));
   return col * 0.5;
 }
 
@@ -226,9 +226,9 @@ void main() {
 `;
 
 export default function WavesBackground({
-  linesGradient = ["#06b6d4", "#10b981", "#a3e635"],
+  linesGradient = ["#3b82f6", "#60a5fa", "#4f46e5"], // Royal Blue, Ice Blue, Deep Indigo
   enabledWaves = ["top", "middle", "bottom"],
-  lineCount = [8],
+  lineCount = [4], // Reduced from 8 to 4 to double shader performance
   lineDistance = [28],
   topWavePosition,
   middleWavePosition,
@@ -282,7 +282,7 @@ export default function WavesBackground({
     camera.position.z = 1;
 
     const renderer = new WebGLRenderer({ antialias: true, alpha: false });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setPixelRatio(1.0); // Capped at 1.0 instead of high-DPI 2.0 to resolve lagging
     renderer.domElement.style.width = "100%";
     renderer.domElement.style.height = "100%";
     container.appendChild(renderer.domElement);

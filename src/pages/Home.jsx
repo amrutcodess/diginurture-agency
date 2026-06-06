@@ -8,7 +8,6 @@ import Projects from "../components/Projects";
 import TestimonialsMarquee from "../components/TestimonialsMarquee";
 import ProcessTimeline from "../components/ProcessTimeline";
 import Pricing from "../components/Pricing";
-import Team from "../components/Team";
 import ContactForm from "../components/ContactForm";
 import Footer from "../components/Footer";
 import WhyUs from "../components/WhyUs";
@@ -18,7 +17,7 @@ export default function Home() {
     <div className="relative min-h-screen w-full bg-midnight overflow-x-hidden">
       {/* 3D Wave Interactive Shader Background */}
       <WavesBackground 
-        linesGradient={["#00f5d4", "#10b981", "#06b6d4"]} // Mint, Emerald, Neon Teal
+        linesGradient={["#3b82f6", "#60a5fa", "#4f46e5"]} // Slate/Blue palette
         animationSpeed={1.5}
       />
       
@@ -51,9 +50,6 @@ export default function Home() {
         {/* Packages & Pricing Tiers */}
         <Pricing />
 
-        {/* Core Co-Founders Team */}
-        <Team />
-
         {/* Consultation Form */}
         <ContactForm />
       </main>
@@ -63,3 +59,4 @@ export default function Home() {
     </div>
   );
 }
+
