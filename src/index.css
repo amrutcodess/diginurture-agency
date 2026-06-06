@@ -1,0 +1,331 @@
+@import "https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,300,400&display=swap";
+@import "https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap";
+@import "tailwindcss";
+
+
+@theme {
+  --font-sans: "Satoshi", "Geist Variable", sans-serif;
+  --font-serif: "Instrument Serif", ui-serif, Georgia, serif;
+
+  /* Color Remapping for Diginurture Agency Emerald-Teal-Lime Custom Scheme */
+  --color-midnight: #020906; /* Green-black background base */
+  --color-navy: #03140e;     /* Very deep green-teal shade */
+  --color-indigo: #07251a;   /* Dark emerald forest */
+  --color-storm: #0b3626;    /* Dark emerald accent */
+  --color-aqua: #10b981;     /* Primary brand color - Emerald Green */
+  --color-mint: #00f5d4;     /* Secondary brand color - Bright Mint */
+  --color-royal: #06b6d4;    /* Accent color - Neon Teal/Cyan */
+  --color-lavender: #0d9488; /* Muted Accent - Deep Teal */
+  --color-fuchsia: #a3e635;  /* Secondary Brand Highlight - Neon Lime */
+
+  --animate-orbit: orbit 25s linear infinite;
+  --animate-float: float 4s ease-in-out infinite;
+  
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+}
+
+/* Base Styles */
+html {
+  scroll-behavior: smooth;
+  background-color: #020906;
+  font-family: var(--font-sans);
+}
+
+body {
+  overflow-x: hidden;
+  background-color: #020906;
+  color: #ffffff;
+}
+
+/* Custom Components & Utilities */
+.c-space {
+  padding-inline: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .c-space {
+    padding-inline: 2.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .c-space {
+    padding-inline: 3.75rem;
+  }
+}
+
+.section-spacing {
+  margin-top: 5rem;
+  min-height: 100vh;
+}
+
+@media (min-width: 768px) {
+  .section-spacing {
+    margin-top: 7.5rem;
+  }
+}
+
+.liquid-glass {
+  background-blend-mode: luminosity;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.03);
+  border: none;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+}
+
+.liquid-glass:before {
+  content: "";
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(
+    rgba(255, 255, 255, 0.45),
+    rgba(255, 255, 255, 0.15) 20%,
+    transparent 40% 60%,
+    rgba(255, 255, 255, 0.15) 80%,
+    rgba(255, 255, 255, 0.45)
+  );
+  padding: 1.4px;
+  position: absolute;
+  inset: 0;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+.text-heading {
+  font-size: 1.875rem;
+  line-height: 1.2;
+  font-weight: 900;
+  letter-spacing: -0.025em;
+  text-transform: uppercase;
+}
+
+@media (min-width: 768px) {
+  .text-heading {
+    font-size: 2.25rem;
+  }
+}
+
+.headtext {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: 700;
+}
+
+.subtext {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  text-wrap: pretty;
+  color: var(--color-neutral-400);
+}
+
+@media (min-width: 768px) {
+  .subtext {
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
+}
+
+/* Grid Component Themes */
+.grid-default-color {
+  border-radius: 1.8rem;
+  background-image: linear-gradient(to bottom, var(--color-storm), var(--color-indigo));
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.grid-black-color {
+  border-radius: 1.8rem;
+  background-image: linear-gradient(to top left, #1c2e27, #0b1a15, #1c2e27);
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.grid-special-color {
+  border-radius: 1.8rem;
+  background-image: linear-gradient(to bottom, var(--color-royal), var(--color-lavender));
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Floating Lines Wave Canvas Container */
+.floating-lines-container {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(16, 185, 129, 0.2);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(16, 185, 129, 0.4);
+}
+
+/* Glowing Border Cards (Timeline Section) */
+.border-glow-card {
+  --edge-proximity: 0;
+  --cursor-angle: 45deg;
+  --edge-sensitivity: 30;
+  --color-sensitivity: calc(var(--edge-sensitivity) + 20);
+  --border-radius: 32px;
+  --glow-padding: 40px;
+  --cone-spread: 25;
+  position: relative;
+  border-radius: var(--border-radius);
+  isolation: isolate;
+  transform: translateZ(0.01px);
+  display: grid;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: var(--card-bg, #0b1c15);
+  overflow: visible;
+  box-shadow: rgba(0, 0, 0, 0.25) 0 1px 2px,
+              rgba(0, 0, 0, 0.2) 0 4px 8px,
+              rgba(0, 0, 0, 0.2) 0 16px 32px;
+}
+
+.border-glow-card:before,
+.border-glow-card:after,
+.border-glow-card > .edge-light {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  transition: opacity 0.25s ease-out;
+  z-index: -1;
+}
+
+.border-glow-card:not(:hover):not(.sweep-active):before,
+.border-glow-card:not(:hover):not(.sweep-active):after,
+.border-glow-card:not(:hover):not(.sweep-active) > .edge-light {
+  opacity: 0;
+  transition: opacity 0.75s ease-in-out;
+}
+
+.border-glow-card:before {
+  border: 1px solid transparent;
+  background: linear-gradient(var(--card-bg, #0b1c15) 0 100%) padding-box,
+              linear-gradient(transparent 0% 100%) border-box,
+              var(--gradient-one, radial-gradient(at 80% 55%, hsla(160, 100%, 76%, 1) 0px, transparent 50%)) border-box,
+              var(--gradient-two, radial-gradient(at 69% 34%, hsla(180, 100%, 74%, 1) 0px, transparent 50%)) border-box,
+              var(--gradient-three, radial-gradient(at 8% 6%, hsla(140, 100%, 78%, 1) 0px, transparent 50%)) border-box,
+              var(--gradient-four, radial-gradient(at 41% 38%, hsla(190, 100%, 64%, 1) 0px, transparent 50%)) border-box,
+              var(--gradient-five, radial-gradient(at 86% 85%, hsla(170, 100%, 74%, 1) 0px, transparent 50%)) border-box,
+              var(--gradient-six, radial-gradient(at 82% 18%, hsla(150, 100%, 65%, 1) 0px, transparent 50%)) border-box,
+              var(--gradient-seven, radial-gradient(at 51% 4%, hsla(165, 100%, 72%, 1) 0px, transparent 50%)) border-box,
+              var(--gradient-base, linear-gradient(#10b981 0 100%)) border-box;
+  opacity: calc((var(--edge-proximity) - var(--color-sensitivity)) / (100 - var(--color-sensitivity)));
+  -webkit-mask-image: conic-gradient(from var(--cursor-angle) at center, black calc(var(--cone-spread) * 1%), transparent calc((var(--cone-spread) + 15) * 1%), transparent calc((100 - var(--cone-spread) - 15) * 1%), black calc((100 - var(--cone-spread)) * 1%));
+  mask-image: conic-gradient(from var(--cursor-angle) at center, black calc(var(--cone-spread) * 1%), transparent calc((var(--cone-spread) + 15) * 1%), transparent calc((100 - var(--cone-spread) - 15) * 1%), black calc((100 - var(--cone-spread)) * 1%));
+}
+
+.border-glow-card:after {
+  border: 1px solid transparent;
+  background: var(--gradient-one, radial-gradient(at 80% 55%, hsla(160, 100%, 76%, 1) 0px, transparent 50%)) padding-box,
+              var(--gradient-two, radial-gradient(at 69% 34%, hsla(180, 100%, 74%, 1) 0px, transparent 50%)) padding-box,
+              var(--gradient-three, radial-gradient(at 8% 6%, hsla(140, 100%, 78%, 1) 0px, transparent 50%)) padding-box,
+              var(--gradient-four, radial-gradient(at 41% 38%, hsla(190, 100%, 64%, 1) 0px, transparent 50%)) padding-box,
+              var(--gradient-five, radial-gradient(at 86% 85%, hsla(170, 100%, 74%, 1) 0px, transparent 50%)) padding-box,
+              var(--gradient-six, radial-gradient(at 82% 18%, hsla(150, 100%, 65%, 1) 0px, transparent 50%)) padding-box,
+              var(--gradient-seven, radial-gradient(at 51% 4%, hsla(165, 100%, 72%, 1) 0px, transparent 50%)) padding-box,
+              var(--gradient-base, linear-gradient(#10b981 0 100%)) padding-box;
+  -webkit-mask-image: linear-gradient(to bottom, #000, #000), radial-gradient(ellipse at 50% 50%, black 40%, transparent 65%), conic-gradient(from var(--cursor-angle) at center, transparent 5%, black 15%, black 85%, transparent 95%);
+  mask-image: linear-gradient(to bottom, #000, #000), radial-gradient(ellipse at 50% 50%, black 40%, transparent 65%), conic-gradient(from var(--cursor-angle) at center, transparent 5%, black 15%, black 85%, transparent 95%);
+  -webkit-mask-composite: source-out, source-over;
+  mask-composite: subtract, add;
+  opacity: calc(var(--fill-opacity, 0.5) * (var(--edge-proximity) - var(--color-sensitivity)) / (100 - var(--color-sensitivity)));
+  mix-blend-mode: soft-light;
+}
+
+.border-glow-card > .edge-light {
+  inset: calc(var(--glow-padding) * -1);
+  pointer-events: none;
+  z-index: 1;
+  -webkit-mask-image: conic-gradient(from var(--cursor-angle) at center, black 2.5%, transparent 10%, transparent 90%, black 97.5%);
+  mask-image: conic-gradient(from var(--cursor-angle) at center, black 2.5%, transparent 10%, transparent 90%, black 97.5%);
+  opacity: calc((var(--edge-proximity) - var(--edge-sensitivity)) / (100 - var(--edge-sensitivity)));
+  mix-blend-mode: plus-lighter;
+}
+
+.border-glow-card > .edge-light:before {
+  content: "";
+  position: absolute;
+  inset: var(--glow-padding);
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px var(--glow-color, hsl(160deg 80% 80% / 100%)),
+              inset 0 0 1px 0 var(--glow-color-60, hsl(160deg 80% 80% / 60%)),
+              inset 0 0 3px 0 var(--glow-color-50, hsl(160deg 80% 80% / 50%)),
+              inset 0 0 6px 0 var(--glow-color-40, hsl(160deg 80% 80% / 40%)),
+              inset 0 0 15px 0 var(--glow-color-30, hsl(160deg 80% 80% / 30%)),
+              0 0 1px 0 var(--glow-color-60, hsl(160deg 80% 80% / 60%)),
+              0 0 3px 0 var(--glow-color-50, hsl(160deg 80% 80% / 50%)),
+              0 0 6px 0 var(--glow-color-40, hsl(160deg 80% 80% / 40%)),
+              0 0 15px 0 var(--glow-color-30, hsl(160deg 80% 80% / 30%));
+}
+
+.border-glow-inner {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* Animations definition */
+@keyframes orbit {
+  0% {
+    transform: rotate(calc(var(--angle) * 1deg)) translateY(calc(var(--radius) * 1px)) rotate(calc(var(--angle) * -1deg));
+  }
+  100% {
+    transform: rotate(calc(var(--angle) * 1deg + 360deg)) translateY(calc(var(--radius) * 1px)) rotate(calc(var(--angle) * -1deg - 360deg));
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.card-swap-container {
+  position: relative;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
+.field-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-neutral-400);
+  margin-bottom: 0.5rem;
+}
