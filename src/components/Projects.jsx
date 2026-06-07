@@ -4,6 +4,38 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 const projectList = [
   {
     id: 1,
+    title: "Eduflow",
+    subDescription: [
+      "An interactive platform for student workflows, course management, and academic collaboration.",
+    ],
+    href: "https://eduflow-app-i063.onrender.com",
+    image: "/assets/projects/eduflow.png",
+    gradient: "bg-gradient-to-br from-[#1e1b4b] to-[#311042]",
+    tags: [
+      { id: 1, name: "ReactJS" },
+      { id: 2, name: "NodeJS" },
+      { id: 3, name: "TailwindCSS" },
+      { id: 4, name: "Render" },
+    ],
+  },
+  {
+    id: 2,
+    title: "Crowd Funding Platform",
+    subDescription: [
+      "A decentralized crowdfunding application with campaign creation and secure payments.",
+    ],
+    href: "https://crowd-funding-platform-mauve.vercel.app/",
+    image: "/assets/projects/crowdfund.png",
+    gradient: "bg-gradient-to-br from-[#0f172a] to-[#1e293b]",
+    tags: [
+      { id: 1, name: "ReactJS" },
+      { id: 2, name: "Vercel" },
+      { id: 3, name: "TailwindCSS" },
+      { id: 4, name: "Web3" },
+    ],
+  },
+  {
+    id: 3,
     title: "KisanSethu",
     subDescription: [
       "A full-scale web application built for farmers to diagnose crop diseases and get immediate solutions.",
@@ -24,12 +56,18 @@ export default function Projects() {
   const scrollRef = useRef(null);
   const [isPaused, setIsPaused] = useState(false);
 
-  // Replicate KisanSethu 12 times to fill the infinite loop carousel track smoothly
+  // Replicate the 3 projects 4 times to fill the infinite loop carousel track smoothly (total 12 items)
   const repeatedProjects = useMemo(() => {
-    return Array.from({ length: 12 }, (_, idx) => ({
-      ...projectList[0],
-      id: `${projectList[0].id}-${idx}`,
-    }));
+    const items = [];
+    for (let i = 0; i < 4; i++) {
+      projectList.forEach((proj, idx) => {
+        items.push({
+          ...proj,
+          id: `${proj.id}-${i}-${idx}`,
+        });
+      });
+    }
+    return items;
   }, []);
 
   useEffect(() => {

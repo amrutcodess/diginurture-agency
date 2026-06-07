@@ -238,7 +238,7 @@ const techStack = [
 
 export default function AboutGrid() {
   const [copied, setCopied] = useState(false);
-  const emailAddress = "hello@diginurture.agency";
+  const emailAddress = "diginurturemarketing@gmail.com";
 
   const handleCopyEmail = () => {
     navigator.clipboard.writeText(emailAddress);
@@ -298,7 +298,7 @@ export default function AboutGrid() {
               <LinkedinIcon className="w-5 h-5" />
             </a>
             <a
-              href="mailto:hello@diginurture.agency"
+              href="mailto:diginurturemarketing@gmail.com"
               className="flex items-center justify-center w-12 h-12 rounded-full bg-white/5 hover:bg-mint hover:text-black border border-white/10 hover:border-transparent transition-all duration-300 hover:scale-110"
               aria-label="Email"
             >

@@ -77,7 +77,7 @@ export default function ContactForm() {
           from_user: formData.name,
           to_user: "Diginurture Agency",
           from_email: formData.email,
-          to_email: "hello@diginurture.agency",
+          to_email: "diginurturemarketing@gmail.com",
           mobile: formData.mobile,
           message: formData.message,
           submission_date: date,
@@ -103,7 +103,7 @@ export default function ContactForm() {
       console.error("EmailJS Error:", err);
       setAlert({
         type: "error",
-        text: "Failed to send message. Please try again later or email hello@diginurture.agency directly.",
+        text: "Failed to send message. Please try again later or email diginurturemarketing@gmail.com directly.",
       });
     } finally {
       setIsSending(false);
@@ -248,10 +248,10 @@ export default function ContactForm() {
           <p className="text-[10px] text-neutral-500">
             Prefer email? Reach us directly at <br />
             <a
-              href="mailto:hello@diginurture.agency"
+              href="mailto:diginurturemarketing@gmail.com"
               className="text-mint hover:text-white transition-colors underline"
             >
-              hello@diginurture.agency
+              diginurturemarketing@gmail.com
             </a>
           </p>
         </div>
