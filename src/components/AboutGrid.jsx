@@ -215,18 +215,16 @@ function TimezoneGlobe() {
 
   return (
     <div ref={containerRef} className="mx-auto aspect-[1/1] w-full max-w-[280px] md:max-w-[320px] relative overflow-hidden flex items-center justify-center">
-      {isIntersecting && (
-        <canvas
-          ref={canvasRef}
-          onPointerDown={onPointerDown}
-          onPointerUp={onPointerUp}
-          onPointerOut={onPointerUp}
-          onMouseMove={onMouseMove}
-          onTouchMove={onTouchMove}
-          style={{ cursor: "grab", opacity: 0 }}
-          className="w-full h-full transition-opacity duration-500 [contain:layout_paint_size]"
-        />
-      )}
+      <canvas
+        ref={canvasRef}
+        onPointerDown={onPointerDown}
+        onPointerUp={onPointerUp}
+        onPointerOut={onPointerUp}
+        onMouseMove={onMouseMove}
+        onTouchMove={onTouchMove}
+        style={{ cursor: "grab", opacity: isIntersecting ? 1 : 0 }}
+        className="w-full h-full transition-opacity duration-500 [contain:layout_paint_size]"
+      />
     </div>
   );
 }

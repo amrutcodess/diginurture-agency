@@ -456,22 +456,22 @@ export default function WavesBackground({
     mixBlendMode,
   ]);
 
-  if (isMobile) {
-    return (
-      <div className="floating-lines-container overflow-hidden" style={{ mixBlendMode }}>
-        {/* Sleek, premium background for mobile (0% CPU/GPU overhead) */}
-        <div className="absolute inset-0 bg-[#020906]" />
-        <div 
-          className="absolute top-[-10%] left-[-15%] w-[80%] h-[50%] rounded-full bg-aqua/5 blur-[100px] animate-pulse" 
-          style={{ animationDuration: "8s" }} 
-        />
-        <div 
-          className="absolute bottom-[-10%] right-[-10%] w-[70%] h-[50%] rounded-full bg-royal/5 blur-[120px] animate-pulse" 
-          style={{ animationDuration: "12s" }} 
-        />
-      </div>
-    );
-  }
-
-  return <div ref={containerRef} className="floating-lines-container" style={{ mixBlendMode }} />;
+  return (
+    <div ref={containerRef} className="floating-lines-container overflow-hidden" style={{ mixBlendMode }}>
+      {isMobile && (
+        <>
+          {/* Sleek, premium background for mobile (0% CPU/GPU overhead) */}
+          <div className="absolute inset-0 bg-[#020906]" />
+          <div 
+            className="absolute top-[-10%] left-[-15%] w-[80%] h-[50%] rounded-full bg-aqua/5 blur-[100px] animate-pulse" 
+            style={{ animationDuration: "8s" }} 
+          />
+          <div 
+            className="absolute bottom-[-10%] right-[-10%] w-[70%] h-[50%] rounded-full bg-royal/5 blur-[120px] animate-pulse" 
+            style={{ animationDuration: "12s" }} 
+          />
+        </>
+      )}
+    </div>
+  );
 }
