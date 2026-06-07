@@ -50,16 +50,31 @@ const projectList = [
       { id: 4, name: "MongoDB" },
     ],
   },
+  {
+    id: 4,
+    title: "Funcall - Voice Changer & Call Recording",
+    subDescription: [
+      "A voice changer and call recording mobile app built with native Android technologies. Allows users to change their voice over live phone calls in real-time, providing fun voice filters and sound effects.",
+    ],
+    href: "https://play.google.com/store/apps/details?id=com.funcall&hl=en_IN",
+    image: "/assets/projects/funcall.png",
+    gradient: "bg-gradient-to-br from-[#0b3626] to-[#041c14]",
+    tags: [
+      { id: 1, name: "Kotlin" },
+      { id: 2, name: "Jetpack Compose" },
+      { id: 3, name: "Android" },
+    ],
+  },
 ];
 
 export default function Projects() {
   const scrollRef = useRef(null);
   const [isPaused, setIsPaused] = useState(false);
 
-  // Replicate the 3 projects 4 times to fill the infinite loop carousel track smoothly (total 12 items)
+  // Replicate the 4 projects 3 times to fill the infinite loop carousel track smoothly (total 12 items)
   const repeatedProjects = useMemo(() => {
     const items = [];
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 3; i++) {
       projectList.forEach((proj, idx) => {
         items.push({
           ...proj,

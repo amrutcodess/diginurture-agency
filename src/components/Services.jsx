@@ -10,7 +10,9 @@ const Card = forwardRef(({ customClass = "", children, style, ...props }, ref) =
     {...props}
     style={{ transform: "translate(-50%, -50%)", ...style }} // Centers card initially to prevent collapsing/blank states before GSAP loads
     className={`absolute top-1/2 left-1/2 select-none pointer-events-auto ${customClass} ${props.className || ""}`}
-  />
+  >
+    {children}
+  </div>
 ));
 Card.displayName = "Card";
 
