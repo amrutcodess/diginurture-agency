@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Scene,
   OrthographicCamera,
@@ -228,7 +228,7 @@ void main() {
 export default function WavesBackground({
   linesGradient = ["#3b82f6", "#60a5fa", "#4f46e5"], // Royal Blue, Ice Blue, Deep Indigo
   enabledWaves = ["top", "middle", "bottom"],
-  lineCount = [4], // Reduced from 8 to 4 to double shader performance
+  lineCount = [3, 4, 3], // Optimized default from [4] to [3, 4, 3] to reduce shader passes
   lineDistance = [28],
   topWavePosition,
   middleWavePosition,
@@ -250,11 +250,22 @@ export default function WavesBackground({
   const parallaxOffset = useRef(new Vector2(0, 0));
   const targetParallaxOffset = useRef(new Vector2(0, 0));
 
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const getLineCount = (waveType) => {
     if (typeof lineCount === "number") return lineCount;
     if (!enabledWaves.includes(waveType)) return 0;
     const idx = enabledWaves.indexOf(waveType);
-    return lineCount[idx] ?? 6;
+    return lineCount[idx] ?? 4;
   };
 
   const getLineDistance = (waveType) => {
@@ -273,6 +284,7 @@ export default function WavesBackground({
   const bottomDist = enabledWaves.includes("bottom") ? getLineDistance("bottom") * 0.01 : 0.01;
 
   useEffect(() => {
+    if (isMobile) return;
     const container = containerRef.current;
     if (!container) return;
 
@@ -281,8 +293,8 @@ export default function WavesBackground({
     const camera = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
     camera.position.z = 1;
 
-    const renderer = new WebGLRenderer({ antialias: true, alpha: false });
-    renderer.setPixelRatio(1.0); // Capped at 1.0 instead of high-DPI 2.0 to resolve lagging
+    const renderer = new WebGLRenderer({ antialias: false, alpha: false, powerPreference: "high-performance" });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.2)); // Cap pixel ratio to 1.2 for performance
     renderer.domElement.style.width = "100%";
     renderer.domElement.style.height = "100%";
     container.appendChild(renderer.domElement);
@@ -342,20 +354,19 @@ export default function WavesBackground({
 
     const clock = new Clock();
 
-    const handleResize = () => {
+    const handleCanvasResize = () => {
       const width = container.clientWidth || 1;
       const height = container.clientHeight || 1;
       renderer.setSize(width, height, false);
-      const ratio = renderer.getPixelRatio();
       uniforms.iResolution.value.set(renderer.domElement.width, renderer.domElement.height, 1);
     };
 
-    handleResize();
+    handleCanvasResize();
 
     const resizeObserver =
       typeof ResizeObserver !== "undefined"
         ? new ResizeObserver(() => {
-            if (isRunning) handleResize();
+            if (isRunning) handleCanvasResize();
           })
         : null;
     if (resizeObserver) resizeObserver.observe(container);
@@ -427,6 +438,7 @@ export default function WavesBackground({
       }
     };
   }, [
+    isMobile,
     linesGradient,
     enabledWaves,
     lineCount,
@@ -443,6 +455,23 @@ export default function WavesBackground({
     parallaxStrength,
     mixBlendMode,
   ]);
+
+  if (isMobile) {
+    return (
+      <div className="floating-lines-container overflow-hidden" style={{ mixBlendMode }}>
+        {/* Sleek, premium background for mobile (0% CPU/GPU overhead) */}
+        <div className="absolute inset-0 bg-[#020906]" />
+        <div 
+          className="absolute top-[-10%] left-[-15%] w-[80%] h-[50%] rounded-full bg-aqua/5 blur-[100px] animate-pulse" 
+          style={{ animationDuration: "8s" }} 
+        />
+        <div 
+          className="absolute bottom-[-10%] right-[-10%] w-[70%] h-[50%] rounded-full bg-royal/5 blur-[120px] animate-pulse" 
+          style={{ animationDuration: "12s" }} 
+        />
+      </div>
+    );
+  }
 
   return <div ref={containerRef} className="floating-lines-container" style={{ mixBlendMode }} />;
 }

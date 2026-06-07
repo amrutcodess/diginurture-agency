@@ -23,7 +23,8 @@
     "react-helmet-async": "^3.0.0",
     "react-router-dom": "^7.17.0",
     "tailwindcss": "^4.3.0",
-    "three": "^0.184.0"
+    "three": "^0.184.0",
+    "vite_react_shadcn_ts": "file:../shanmukha-main"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

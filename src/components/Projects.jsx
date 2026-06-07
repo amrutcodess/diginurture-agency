@@ -115,23 +115,38 @@ export default function Projects() {
   useEffect(() => {
     if (isPaused) return;
 
+    const el = scrollRef.current;
+    if (!el) return;
+
+    let oneThird = el.scrollWidth / 3;
+    let currentScroll = el.scrollLeft;
+
+    const handleResize = () => {
+      if (scrollRef.current) {
+        oneThird = scrollRef.current.scrollWidth / 3;
+      }
+    };
+    window.addEventListener("resize", handleResize);
+
     let frameId;
     const scrollStep = () => {
-      const el = scrollRef.current;
       if (el) {
-        el.scrollLeft += 1;
-        const oneThird = el.scrollWidth / 3;
-        if (el.scrollLeft >= oneThird * 2) {
-          el.scrollLeft -= oneThird;
-        } else if (el.scrollLeft <= 0) {
-          el.scrollLeft += oneThird;
+        currentScroll += 0.8; // Smooth autoscroll increment
+        if (currentScroll >= oneThird * 2) {
+          currentScroll -= oneThird;
+        } else if (currentScroll <= 0) {
+          currentScroll += oneThird;
         }
+        el.scrollLeft = currentScroll;
       }
       frameId = requestAnimationFrame(scrollStep);
     };
 
     frameId = requestAnimationFrame(scrollStep);
-    return () => cancelAnimationFrame(frameId);
+    return () => {
+      cancelAnimationFrame(frameId);
+      window.removeEventListener("resize", handleResize);
+    };
   }, [isPaused]);
 
   const handleArrowScroll = (direction) => {

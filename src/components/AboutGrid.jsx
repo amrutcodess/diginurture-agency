@@ -129,6 +129,7 @@ const GLOBE_CONFIG = {
 // Globe Subcomponent
 function TimezoneGlobe() {
   const canvasRef = useRef(null);
+  const containerRef = useRef(null);
   const pointerRef = useRef(null);
   const rValue = useRef(0);
   const locationMotion = useMotionValue(0);
@@ -137,6 +138,21 @@ function TimezoneGlobe() {
     damping: 30,
     stiffness: 100,
   });
+
+  const [isIntersecting, setIsIntersecting] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsIntersecting(entry.isIntersecting);
+      },
+      { threshold: 0.05 }
+    );
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+    return () => observer.disconnect();
+  }, []);
 
   const onPointerDown = (e) => {
     pointerRef.current = e.clientX;
@@ -163,6 +179,7 @@ function TimezoneGlobe() {
   };
 
   useEffect(() => {
+    if (!isIntersecting) return;
     let width = 0;
     const updateSize = () => {
       if (canvasRef.current) {
@@ -194,20 +211,22 @@ function TimezoneGlobe() {
       globe.destroy();
       window.removeEventListener("resize", updateSize);
     };
-  }, [locationSpring]);
+  }, [locationSpring, isIntersecting]);
 
   return (
-    <div className="mx-auto aspect-[1/1] w-full max-w-[280px] md:max-w-[320px] relative overflow-hidden flex items-center justify-center">
-      <canvas
-        ref={canvasRef}
-        onPointerDown={onPointerDown}
-        onPointerUp={onPointerUp}
-        onPointerOut={onPointerUp}
-        onMouseMove={onMouseMove}
-        onTouchMove={onTouchMove}
-        style={{ cursor: "grab", opacity: 0 }}
-        className="w-full h-full transition-opacity duration-500 [contain:layout_paint_size]"
-      />
+    <div ref={containerRef} className="mx-auto aspect-[1/1] w-full max-w-[280px] md:max-w-[320px] relative overflow-hidden flex items-center justify-center">
+      {isIntersecting && (
+        <canvas
+          ref={canvasRef}
+          onPointerDown={onPointerDown}
+          onPointerUp={onPointerUp}
+          onPointerOut={onPointerUp}
+          onMouseMove={onMouseMove}
+          onTouchMove={onTouchMove}
+          style={{ cursor: "grab", opacity: 0 }}
+          className="w-full h-full transition-opacity duration-500 [contain:layout_paint_size]"
+        />
+      )}
     </div>
   );
 }

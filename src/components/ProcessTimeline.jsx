@@ -35,9 +35,10 @@ const GlowCard = ({
   fillOpacity = 0.4,
 }) => {
   const cardRef = useRef(null);
+  const rectRef = useRef(null);
 
   const getCenterOffset = useCallback((element) => {
-    const rect = element.getBoundingClientRect();
+    const rect = rectRef.current || element.getBoundingClientRect();
     return [rect.width / 2, rect.height / 2];
   }, []);
 
@@ -71,7 +72,10 @@ const GlowCard = ({
     const el = cardRef.current;
     if (!el) return;
 
-    const rect = el.getBoundingClientRect();
+    if (!rectRef.current) {
+      rectRef.current = el.getBoundingClientRect();
+    }
+    const rect = rectRef.current;
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
     
@@ -81,6 +85,25 @@ const GlowCard = ({
     el.style.setProperty("--edge-proximity", `${(prox * 100).toFixed(3)}`);
     el.style.setProperty("--cursor-angle", `${angle.toFixed(3)}deg`);
   };
+
+  const handleMouseEnter = () => {
+    const el = cardRef.current;
+    if (el) {
+      rectRef.current = el.getBoundingClientRect();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    rectRef.current = null;
+  };
+
+  useEffect(() => {
+    const handleResize = () => {
+      rectRef.current = null;
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const glowStyles = getGlowStyles(glowColor, glowIntensity);
 
@@ -119,6 +142,8 @@ const GlowCard = ({
     <div
       ref={cardRef}
       onPointerMove={onPointerMove}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       className={`border-glow-card ${className}`}
       style={finalStyles}
     >
