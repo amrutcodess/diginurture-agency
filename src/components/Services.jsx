@@ -4,10 +4,11 @@ import { animate, stagger } from "animejs";
 import { Code, Rocket, Settings, CheckCircle } from "lucide-react";
 
 // Card wrapper component
-const Card = forwardRef(({ customClass = "", children, ...props }, ref) => (
+const Card = forwardRef(({ customClass = "", children, style, ...props }, ref) => (
   <div
     ref={ref}
     {...props}
+    style={{ transform: "translate(-50%, -50%)", ...style }} // Centers card initially to prevent collapsing/blank states before GSAP loads
     className={`absolute top-1/2 left-1/2 select-none pointer-events-auto ${customClass} ${props.className || ""}`}
   />
 ));
@@ -38,13 +39,13 @@ const setCardInitialProperties = (element, pos, skew) => {
 
 // 3D Deck Swap Container
 const CardSwapContainer = ({
-  width = 500,
-  height = 400,
+  width = 580,
+  height = 420,
   cardDistance = 35,
-  verticalDistance = 70,
+  verticalDistance = 60,
   delay = 5000,
   pauseOnHover = true,
-  skewAmount = 3,
+  skewAmount = 2,
   children,
 }) => {
   const containerRef = useRef(null);
@@ -177,38 +178,63 @@ const CardSwapContainer = ({
   );
 };
 
+// Aligned with the other developer specializations in the site
 const serviceList = [
   {
-    title: "FULLSTACK WEB & APP SOLUTIONS",
-    description: "End-to-end digital excellence: from complex web architectures to high-performance mobile applications.",
-    features: ["React / Next.js / Node.js", "Express & Python Backend", "iOS & Android Native Apps", "Secure Cloud Architecture"],
+    title: "FRONTEND ENGINEERING SPECIALISTS",
+    description: "Build ultra-fast, responsive web applications and interactive portals using React, Next.js, and modern CSS environments.",
+    features: ["React 18/19 & Next.js Ecosystems", "Figma to Pixel-Perfect Interfaces", "SEO & Bundle Size Optimization", "WCAG & Web Accessibility Standards"],
     icon: <Code className="size-8 text-aqua" />,
     gradient: "from-[#0b281e] to-[#04120f]", // emerald gradient
-    bookmark: "Web & App",
+    bookmark: "Frontend",
     image: "/assets/service-fullstack.png",
   },
   {
-    title: "STARTUP & MVP DEVELOPMENT",
-    description: "Quickly validate your concept with a market-ready MVP that captures your core idea while ensuring future scalability.",
-    features: ["Rapid Prototyping & Design", "Core Feature Development", "User Analytics Integration", "Scalable Database Design"],
+    title: "BACKEND API ARCHITECTURES",
+    description: "Architect secure, highly reliable backend server endpoints, microservices, and database collections.",
+    features: ["NodeJS, Express & NestJS Endpoints", "MongoDB & PostgreSQL Integration", "JWT Authentication & Role Control", "WebSocket Real-time Events Sockets"],
+    icon: <Settings className="size-8 text-fuchsia" />,
+    gradient: "from-[#14532d] to-[#062c16]", // forest green gradient
+    bookmark: "Backend",
+    image: "/assets/service-custom.png",
+  },
+  {
+    title: "CROSS-PLATFORM MOBILE APPS",
+    description: "Launch native mobile applications for Android & iOS featuring fluid animations, offline caches, and device APIs access.",
+    features: ["Kotlin & Jetpack Compose Apps", "Flutter / Dart Mobile Development", "Offline-First local SQLite caches", "Google Play & App Store Release Support"],
     icon: <Rocket className="size-8 text-mint" />,
     gradient: "from-[#0d4e3b] to-[#052c20]", // mint/emerald gradient
-    bookmark: "MVP Dev",
+    bookmark: "Mobile Apps",
     image: "/assets/service-mvp.png",
   },
   {
-    title: "CUSTOM SOFTWARE SOLUTIONS",
-    description: "Bespoke applications tailored to your unique business challenges, workflows, and long-term goals.",
-    features: ["Enterprise Automation & CRMs", "Seamless API Integrations", "Legacy System Modernization", "Custom Data Dashboards"],
-    icon: <Settings className="size-8 text-fuchsia" />,
-    gradient: "from-[#14532d] to-[#062c16]", // forest green gradient
-    bookmark: "Custom Software",
+    title: "CLOUD DEVOPS AUTOMATIONS",
+    description: "Configure automated CI/CD deployment pipelines, load balancing, cloud clusters, and monitor server vitals.",
+    features: ["AWS VPC & Cloud Networks Subnets", "Docker Containerization & Kubernetes", "GitHub Actions CI/CD rolling updates", "Horizontal scaling & DB Daily Backups"],
+    icon: <Settings className="size-8 text-lavender" />,
+    gradient: "from-[#105e46] to-[#04281d]", // dark teal gradient
+    bookmark: "DevOps",
     image: "/assets/service-custom.png",
   },
 ];
 
 export default function Services() {
   const headingRef = useRef(null);
+  const [dimensions, setDimensions] = useState({ width: 580, height: 420 });
+
+  // Dynamically update card dimensions to prevent visual bugs or blank spaces
+  useEffect(() => {
+    const handleResize = () => {
+      const isDesktop = window.innerWidth > 768;
+      setDimensions({
+        width: isDesktop ? 580 : 340,
+        height: isDesktop ? 420 : 450,
+      });
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     const el = headingRef.current;
@@ -236,6 +262,8 @@ export default function Services() {
     return () => observer.disconnect();
   }, []);
 
+  const isDesktop = window.innerWidth > 768;
+
   return (
     <section
       className="c-space section-spacing overflow-hidden"
@@ -255,10 +283,10 @@ export default function Services() {
         <div className="w-full lg:w-1/3 flex flex-col text-left services-text-content opacity-0 px-4 lg:px-0">
           <div className="liquid-glass bg-white/5 border border-white/10 p-8 md:p-10 rounded-3xl shadow-2xl backdrop-blur-xl">
             <p className="text-xl md:text-2xl font-semibold leading-relaxed text-white">
-              We build robust apps through collaborative development that turns your vision into reality.
+              We build robust applications through collaborative development that turns your vision into reality.
               <br />
               <br />
-              Specializing in <span className="text-aqua font-black">Fullstack Web & App Solutions</span> for modern businesses.
+              Specializing in <span className="text-aqua font-black">Vetted Developer Specializations</span> for modern businesses.
             </p>
           </div>
         </div>
@@ -268,10 +296,10 @@ export default function Services() {
           <div className="absolute -inset-10 bg-aqua/5 blur-[100px] rounded-full pointer-events-none" />
           
           <CardSwapContainer
-            width={window.innerWidth > 768 ? 580 : 340}
-            height={window.innerWidth > 768 ? 420 : 450}
-            cardDistance={window.innerWidth > 768 ? 35 : 20}
-            verticalDistance={window.innerWidth > 768 ? 60 : 45}
+            width={dimensions.width}
+            height={dimensions.height}
+            cardDistance={isDesktop ? 35 : 20}
+            verticalDistance={isDesktop ? 60 : 45}
             delay={5000}
             skewAmount={2}
           >

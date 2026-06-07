@@ -1,15 +1,15 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useMemo } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
 const projectList = [
   {
     id: 1,
-    title: "KisanSethu ",
+    title: "KisanSethu",
     subDescription: [
-      "A full-scale webapp built for the farmer to get products diagnosed for their crop problems.",
+      "A full-scale web application built for farmers to diagnose crop diseases and get immediate solutions.",
     ],
     href: "https://shanmukha-kisansethu.vercel.app/",
-    image: "/assets/projects/fitness_crm.png",
+    image: "/assets/projects/kisansethu.png",
     gradient: "bg-gradient-to-br from-[#064e3b] to-[#022c22]",
     tags: [
       { id: 1, name: "ReactJS" },
@@ -18,87 +18,19 @@ const projectList = [
       { id: 4, name: "MongoDB" },
     ],
   },
-  {
-    id: 2,
-    title: "Funcall - Voice Changer & Call Recording",
-    subDescription: [
-      "A voice changer and call recording mobile app built with native Android technologies. Allows users to change their voice over live phone calls in real-time, providing fun voice filters and sound effects.",
-    ],
-    href: "https://play.google.com/store/apps/details?id=com.funcall&hl=en_IN",
-    image: "/assets/projects/funcall.png",
-    gradient: "bg-gradient-to-br from-[#0b3626] to-[#041c14]",
-    tags: [
-      { id: 1, name: "Kotlin" },
-      { id: 2, name: "Jetpack Compose" },
-      { id: 3, name: "Android" },
-    ],
-  },
-  {
-    id: 3,
-    title: "Automotive Sales CRM & Dealership System",
-    subDescription: [
-      "A centralized inventory system for managing car models, variants, pricing, availability, and vehicle specifications with real-time updates for sales teams.",
-    ],
-    href: "#",
-    image: "/assets/projects/Car dealership.png",
-    gradient: "bg-gradient-to-br from-[#10b981] to-[#064e3b]",
-    tags: [
-      { id: 1, name: "NextJS" },
-      { id: 2, name: "Tailwind CSS" },
-      { id: 3, name: "Firebase" },
-    ],
-  },
-  {
-    id: 4,
-    title: "Real-Time Last-Mile Delivery Platform",
-    subDescription: [
-      "A dynamic delivery management system handling order assignment, rider task queues, route optimization, and real-time tracking for operations managers.",
-    ],
-    href: "https://play.google.com/store/apps/details?id=com.rove_customer&pcampaignid=web_share",
-    image: "/assets/projects/ROVE.png",
-    gradient: "bg-gradient-to-br from-[#0d9488] to-[#115e59]",
-    tags: [
-      { id: 1, name: "Kotlin" },
-      { id: 2, name: "NodeJS" },
-      { id: 3, name: "MongoDB" },
-    ],
-  },
-  {
-    id: 5,
-    title: "FMGE Exam Prep & Learning Mobile Platform",
-    subDescription: [
-      "A secure mobile learning platform built for medical graduates preparing for licensing exams. Includes mock tests, timed sections, study material token authentication, and screenshots blocking security.",
-    ],
-    href: "https://apps.apple.com/us/app/aspira-edge/id6755354949",
-    image: "/assets/projects/FMGE.png",
-    gradient: "bg-gradient-to-br from-[#06b6d4] to-[#0891b2]",
-    tags: [
-      { id: 1, name: "Flutter" },
-      { id: 2, name: "iOS" },
-      { id: 3, name: "Android" },
-    ],
-  },
-  {
-    id: 6,
-    title: "Sutra Vedic - Premium Ayurvedic E-commerce",
-    subDescription: [
-      "A high-end e-commerce platform dedicated to ancient Ayurvedic wellness and natural products. Built with Next.js, hosting dynamic product catalogs and multi-language French/English flows.",
-    ],
-    href: "https://www.sutravedic.fr/",
-    image: "/assets/projects/sutravedic.png",
-    gradient: "bg-gradient-to-br from-[#047857] to-[#065f46]",
-    tags: [
-      { id: 1, name: "NextJS" },
-      { id: 2, name: "Tailwind" },
-      { id: 3, name: "React" },
-    ],
-  },
 ];
 
 export default function Projects() {
   const scrollRef = useRef(null);
   const [isPaused, setIsPaused] = useState(false);
-  const repeatedProjects = [...projectList, ...projectList, ...projectList];
+
+  // Replicate KisanSethu 12 times to fill the infinite loop carousel track smoothly
+  const repeatedProjects = useMemo(() => {
+    return Array.from({ length: 12 }, (_, idx) => ({
+      ...projectList[0],
+      id: `${projectList[0].id}-${idx}`,
+    }));
+  }, []);
 
   useEffect(() => {
     if (scrollRef.current) {
