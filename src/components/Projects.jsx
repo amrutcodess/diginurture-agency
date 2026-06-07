@@ -4,11 +4,11 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 const projectList = [
   {
     id: 1,
-    title: "Fitness Sales CRM & Operations Automation Platform",
+    title: "KisanSethu ",
     subDescription: [
-      "A full-scale digital ecosystem built to streamline sales, quoting, inventory, service operations, and dealer management for fitness equipment companies. Includes a unified lead pipeline, automated WhatsApp follow-ups, price validation, inventory masters, and dealer portals.",
+      "A full-scale webapp built for the farmer to get products diagnosed for their crop problems.",
     ],
-    href: "https://probodyline-dashboard.vercel.app/dashboard/products",
+    href: "https://shanmukha-kisansethu.vercel.app/",
     image: "/assets/projects/fitness_crm.png",
     gradient: "bg-gradient-to-br from-[#064e3b] to-[#022c22]",
     tags: [
