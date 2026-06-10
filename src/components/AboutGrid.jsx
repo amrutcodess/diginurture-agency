@@ -105,7 +105,7 @@ const OrbitingCircles = ({
 
 // Globe configuration
 const GLOBE_CONFIG = {
-  devicePixelRatio: 2,
+  devicePixelRatio: 1.5,
   width: 600,
   height: 600,
   phi: 0,

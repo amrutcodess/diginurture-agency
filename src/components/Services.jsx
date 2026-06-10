@@ -294,14 +294,14 @@ export default function Services() {
         </div>
 
         {/* Right Side Carousel */}
-        <div className="w-full lg:w-2/3 relative h-[500px] md:h-[600px] services-cards-container opacity-0 flex justify-center lg:justify-end mt-10 lg:mt-0">
+        <div className="w-full lg:w-2/3 relative h-[500px] md:h-[600px] services-cards-container opacity-0 flex justify-center lg:justify-end mt-24 lg:mt-12">
           <div className="absolute -inset-10 bg-aqua/5 blur-[100px] rounded-full pointer-events-none" />
           
           <CardSwapContainer
             width={dimensions.width}
             height={dimensions.height}
             cardDistance={isDesktop ? 35 : 20}
-            verticalDistance={isDesktop ? 60 : 45}
+            verticalDistance={isDesktop ? 24 : 16}
             delay={5000}
             skewAmount={2}
           >

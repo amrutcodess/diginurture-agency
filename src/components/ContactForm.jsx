@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import emailjs from "@emailjs/browser";
 import confetti from "canvas-confetti";
 import { Mail, Phone, Send, AlertCircle, CheckCircle2 } from "lucide-react";
+import { supabase } from "../lib/supabase";
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -69,6 +70,26 @@ export default function ContactForm() {
       const date = today.toLocaleDateString();
       const time = today.toLocaleTimeString();
 
+      // Save to Supabase audit_requests table
+      const { error: dbErr } = await supabase
+        .from("audit_requests")
+        .insert([{
+          name: formData.name,
+          email: formData.email,
+          company: `Mobile: ${formData.mobile}`,
+          industry: "Discovery Call",
+          bottleneck: "—",
+          lead_volume: "—",
+          tech_stack: "—",
+          primary_goal: "Discovery Call",
+          notes: formData.message
+        }]);
+
+      if (dbErr) {
+        console.error("Supabase error:", dbErr);
+        throw new Error(dbErr.message || "Failed to save submission to database.");
+      }
+
       // EmailJS sending using pre-configured Stacktribe service credentials
       await emailjs.send(
         "service_jxydfyr",
@@ -100,10 +121,10 @@ export default function ContactForm() {
       });
       setFormData({ name: "", email: "", mobile: "", message: "" });
     } catch (err) {
-      console.error("EmailJS Error:", err);
+      console.error("Error during submission:", err);
       setAlert({
         type: "error",
-        text: "Failed to send message. Please try again later or email diginurturemarketing@gmail.com directly.",
+        text: err.message || "Failed to send message. Please try again later or email diginurturemarketing@gmail.com directly.",
       });
     } finally {
       setIsSending(false);
