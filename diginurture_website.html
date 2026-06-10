@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0A192F;
+  --navy2:#0d1f3c;
+  --navy3:#112240;
+  --em:#10B981;
+  --em2:#34D399;
+  --em3:#059669;
+  --white:#FFFFFF;
+  --slate:#8892B0;
+  --slate2:#a8b2d8;
+  --font-head:'Syne',sans-serif;
+  --font-body:'Outfit',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--navy);
+  color:var(--white);
+  font-family:var(--font-body);
+  overflow-x:hidden;
+  cursor:none;
+}
+
+/* ── Custom cursor ── */
+#cursor{position:fixed;width:10px;height:10px;background:var(--em);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .1s;mix-blend-mode:screen}
+#cursor-ring{position:fixed;width:36px;height:36px;border:1.5px solid rgba(16,185,129,.4);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all .18s ease;mix-blend-mode:screen}
+body:hover #cursor-ring{opacity:1}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--navy2)}
+::-webkit-scrollbar-thumb{background:var(--em3);border-radius:2px}
+
+/* ── Nav ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.2rem 3.5rem;
+  background:rgba(10,25,47,.8);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(16,185,129,.1);
+  transition:all .3s;
+}
+.nav-logo{
+  font-family:var(--font-head);font-size:1.3rem;font-weight:800;
+  color:var(--white);letter-spacing:-.5px;
+  display:flex;align-items:center;gap:.5rem;
+}
+.nav-logo span{color:var(--em)}
+.nav-links{display:flex;gap:.3rem}
+.nav-link{
+  background:none;border:none;cursor:none;
+  font-family:var(--font-body);font-size:.85rem;font-weight:500;
+  color:var(--slate);padding:.5rem 1rem;border-radius:4px;
+  transition:color .2s,background .2s;letter-spacing:.3px;
+}
+.nav-link:hover,.nav-link.active{color:var(--em);background:rgba(16,185,129,.08)}
+.nav-cta{
+  background:var(--em);color:#fff;border:none;border-radius:4px;
+  font-family:var(--font-body);font-weight:600;font-size:.85rem;
+  padding:.55rem 1.3rem;cursor:none;letter-spacing:.2px;
+  box-shadow:0 4px 14px rgba(16,185,129,.25);
+  transition:all .2s;
+}
+.nav-cta:hover{background:var(--em2);box-shadow:0 0 15px rgba(16,185,129,.5);transform:translateY(-2px)}
+.nav-cta:active{background:var(--em3);transform:translateY(1px);box-shadow:none}
+
+/* ── Pages ── */
+.page{display:none;animation:fadeUp .5s ease both}
+.page.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── Hero ── */
+.hero{
+  min-height:100vh;position:relative;
+  display:flex;align-items:center;
+  padding:8rem 3.5rem 4rem;
+  overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;z-index:0;
+  background:radial-gradient(ellipse 80% 60% at 60% 40%, rgba(16,185,129,.06) 0%, transparent 70%),
+             radial-gradient(ellipse 40% 40% at 85% 70%, rgba(16,185,129,.04) 0%, transparent 60%),
+             var(--navy);
+}
+.hero-grid{
+  position:absolute;inset:0;z-index:0;
+  background-image:
+    linear-gradient(rgba(16,185,129,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(16,185,129,.04) 1px, transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+}
+.orb{
+  position:absolute;border-radius:50%;filter:blur(80px);
+  animation:pulse 6s ease-in-out infinite;
+}
+.orb1{width:400px;height:400px;background:rgba(16,185,129,.07);top:10%;right:5%;animation-delay:0s}
+.orb2{width:280px;height:280px;background:rgba(16,185,129,.05);bottom:20%;left:10%;animation-delay:3s}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:.7}50%{transform:scale(1.15);opacity:1}}
+
+.hero-content{position:relative;z-index:1;max-width:720px}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-family:var(--font-mono);font-size:.73rem;
+  color:var(--em);border:1px solid rgba(16,185,129,.3);
+  background:rgba(16,185,129,.07);
+  padding:.4rem 1rem;border-radius:20px;margin-bottom:1.8rem;
+  letter-spacing:.5px;
+}
+.hero-badge::before{content:'';width:6px;height:6px;background:var(--em);border-radius:50%;animation:blink 1.5s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.hero h1{
+  font-family:var(--font-head);font-size:clamp(2.8rem,5.5vw,5rem);
+  font-weight:800;line-height:1.05;letter-spacing:-2px;
+  margin-bottom:1.3rem;
+}
+.hero h1 em{font-style:normal;color:var(--em)}
+.hero-sub{
+  font-size:1.05rem;color:var(--slate2);line-height:1.75;
+  max-width:560px;margin-bottom:2.5rem;font-weight:400;
+}
+.hero-actions{display:flex;gap:1rem;align-items:center;flex-wrap:wrap}
+.btn-primary{
+  background:var(--em);color:#fff;border:none;border-radius:4px;
+  font-family:var(--font-body);font-weight:600;font-size:.95rem;
+  padding:.8rem 2rem;cursor:none;letter-spacing:.2px;
+  box-shadow:0 4px 20px rgba(16,185,129,.3);
+  transition:all .25s;
+}
+.btn-primary:hover{background:var(--em2);box-shadow:0 0 20px rgba(16,185,129,.55);transform:translateY(-2px)}
+.btn-primary:active{background:var(--em3);transform:translateY(1px);box-shadow:none}
+.btn-ghost{
+  background:transparent;color:var(--slate2);
+  border:1px solid rgba(136,146,176,.3);border-radius:4px;
+  font-family:var(--font-body);font-weight:500;font-size:.95rem;
+  padding:.8rem 1.8rem;cursor:none;
+  transition:all .25s;
+}
+.btn-ghost:hover{color:var(--em);border-color:rgba(16,185,129,.4);background:rgba(16,185,129,.05)}
+.hero-note{font-size:.8rem;color:var(--slate);margin-top:.6rem;width:100%;font-family:var(--font-mono)}
+
+.hero-stats{
+  position:relative;z-index:1;
+  display:flex;gap:3rem;margin-top:4rem;padding-top:2rem;
+  border-top:1px solid rgba(255,255,255,.06);
+}
+.stat-item .stat-num{font-family:var(--font-head);font-size:2rem;font-weight:800;color:var(--em);letter-spacing:-1px}
+.stat-item .stat-label{font-size:.8rem;color:var(--slate);font-weight:500;margin-top:.15rem}
+
+/* ── Sections ── */
+section{padding:5rem 3.5rem}
+.section-tag{
+  font-family:var(--font-mono);font-size:.72rem;color:var(--em);
+  letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.8rem;
+  display:flex;align-items:center;gap:.5rem;
+}
+.section-tag::after{content:'';flex:0 0 32px;height:1px;background:var(--em);opacity:.5}
+h2.section-title{
+  font-family:var(--font-head);font-size:clamp(2rem,3.5vw,2.8rem);
+  font-weight:800;letter-spacing:-1px;line-height:1.1;
+  margin-bottom:1rem;
+}
+h2.section-title em{font-style:normal;color:var(--em)}
+.section-body{color:var(--slate2);font-size:1rem;line-height:1.8;max-width:600px}
+
+/* ── Glass cards ── */
+.glass-card{
+  background:rgba(17,34,64,.7);border:1px solid rgba(136,146,176,.12);
+  border-radius:12px;padding:2rem;
+  backdrop-filter:blur(10px);
+  transition:border-color .3s,transform .3s,box-shadow .3s;
+  position:relative;overflow:hidden;
+}
+.glass-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg, transparent, rgba(16,185,129,.3), transparent);
+  opacity:0;transition:opacity .3s;
+}
+.glass-card:hover{
+  border-color:rgba(16,185,129,.3);
+  transform:translateY(-4px);
+  box-shadow:0 20px 50px rgba(0,0,0,.3), 0 0 30px rgba(16,185,129,.06);
+}
+.glass-card:hover::before{opacity:1}
+.card-icon{
+  width:48px;height:48px;
+  background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);
+  border-radius:10px;display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;margin-bottom:1.2rem;
+}
+.card-title{font-family:var(--font-head);font-size:1.1rem;font-weight:700;margin-bottom:.6rem}
+.card-body{color:var(--slate);font-size:.9rem;line-height:1.7}
+.card-em{color:var(--em);font-family:var(--font-mono);font-size:.78rem;margin-top:1rem;letter-spacing:.3px}
+
+/* ── Grid layouts ── */
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-top:3rem}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:2rem;margin-top:3rem}
+.grid-asym{display:grid;grid-template-columns:1.2fr .8fr;gap:4rem;align-items:center;margin-top:3rem}
+
+/* ── Process steps ── */
+.process-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:0;margin-top:3rem;position:relative}
+.process-steps::before{
+  content:'';position:absolute;top:40px;left:15%;right:15%;height:1px;
+  background:linear-gradient(90deg, transparent, var(--em), transparent);
+  opacity:.2;
+}
+.process-step{padding:2rem;text-align:center;position:relative}
+.step-num{
+  width:64px;height:64px;border-radius:50%;
+  border:1px solid rgba(16,185,129,.3);
+  background:rgba(16,185,129,.08);
+  font-family:var(--font-head);font-size:1.3rem;font-weight:800;color:var(--em);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 1.2rem;
+  position:relative;z-index:1;
+}
+.step-title{font-family:var(--font-head);font-size:1rem;font-weight:700;margin-bottom:.6rem}
+.step-body{color:var(--slate);font-size:.88rem;line-height:1.7}
+
+/* ── Service matrix ── */
+.service-row{
+  display:flex;align-items:flex-start;gap:1.5rem;padding:1.5rem;
+  border-bottom:1px solid rgba(255,255,255,.05);
+  transition:background .2s;border-radius:8px;
+}
+.service-row:hover{background:rgba(16,185,129,.04)}
+.service-row:last-child{border-bottom:none}
+.service-num{font-family:var(--font-mono);color:var(--em);opacity:.5;font-size:.8rem;padding-top:3px;min-width:28px}
+.service-name{font-weight:600;font-size:.95rem;margin-bottom:.3rem}
+.service-desc{color:var(--slate);font-size:.88rem}
+.service-tag{color:var(--em);font-size:.82rem;font-style:italic;font-weight:500}
+
+/* ── Case study cards ── */
+.case-card{
+  background:var(--navy3);border:1px solid rgba(136,146,176,.1);
+  border-radius:14px;overflow:hidden;
+  transition:transform .3s,box-shadow .3s,border-color .3s;
+}
+.case-card:hover{transform:translateY(-6px);border-color:rgba(16,185,129,.25);box-shadow:0 24px 60px rgba(0,0,0,.4)}
+.case-header{
+  padding:2rem;
+  background:linear-gradient(135deg, rgba(16,185,129,.08), transparent);
+  border-bottom:1px solid rgba(255,255,255,.05);
+}
+.case-tag{font-family:var(--font-mono);font-size:.72rem;color:var(--em);letter-spacing:1px;text-transform:uppercase;margin-bottom:.6rem}
+.case-title{font-family:var(--font-head);font-size:1.3rem;font-weight:700;margin-bottom:.4rem}
+.case-sub{color:var(--slate);font-size:.88rem}
+.case-body{padding:2rem}
+.case-stat{
+  display:flex;gap:2rem;margin-bottom:1.5rem;
+  padding-bottom:1.5rem;border-bottom:1px solid rgba(255,255,255,.05);
+}
+.case-metric .metric-val{font-family:var(--font-head);font-size:2rem;font-weight:800;color:var(--em);line-height:1}
+.case-metric .metric-lbl{font-size:.78rem;color:var(--slate);margin-top:.2rem}
+.case-desc{color:var(--slate2);font-size:.9rem;line-height:1.7}
+
+/* ── Security section ── */
+.security-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.2rem;
+  margin-top:2rem;
+}
+.sec-item{
+  display:flex;align-items:flex-start;gap:1rem;
+  padding:1.2rem;background:rgba(16,185,129,.04);
+  border:1px solid rgba(16,185,129,.12);border-radius:8px;
+}
+.sec-icon{color:var(--em);font-size:1.3rem;flex-shrink:0;margin-top:2px}
+.sec-text .sec-title{font-weight:600;font-size:.9rem;margin-bottom:.25rem}
+.sec-text .sec-body{color:var(--slate);font-size:.82rem;line-height:1.5}
+
+/* ── Audit form ── */
+.audit-wrap{max-width:680px;margin:0 auto}
+.form-steps-bar{display:flex;gap:.5rem;margin-bottom:2.5rem}
+.fstep{
+  flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.08);
+  transition:background .4s;
+}
+.fstep.done{background:var(--em)}
+.fstep.active{background:rgba(16,185,129,.4)}
+.form-panel{display:none;animation:fadeUp .4s ease both}
+.form-panel.active{display:block}
+.form-step-title{font-family:var(--font-head);font-size:1.5rem;font-weight:700;margin-bottom:.4rem}
+.form-step-sub{color:var(--slate);font-size:.9rem;margin-bottom:2rem}
+.form-group{margin-bottom:1.3rem}
+.form-label{display:block;font-size:.82rem;color:var(--slate2);font-weight:500;margin-bottom:.5rem;letter-spacing:.3px}
+.form-input,.form-select,.form-textarea{
+  width:100%;background:rgba(17,34,64,.8);
+  border:1px solid rgba(136,146,176,.2);
+  color:var(--white);border-radius:4px;
+  font-family:var(--font-body);font-size:.92rem;
+  padding:.75rem 1rem;outline:none;
+  transition:border-color .2s,box-shadow .2s;
+}
+.form-input:focus,.form-select:focus,.form-textarea:focus{
+  border-color:var(--em);box-shadow:0 0 0 3px rgba(16,185,129,.12);
+}
+.form-input::placeholder,.form-textarea::placeholder{color:rgba(136,146,176,.5)}
+.form-select option{background:var(--navy2)}
+.form-textarea{resize:vertical;min-height:110px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-nav{display:flex;justify-content:space-between;margin-top:2rem}
+.form-success{text-align:center;padding:3rem 2rem}
+.form-success .success-icon{font-size:3.5rem;margin-bottom:1rem}
+.form-success h3{font-family:var(--font-head);font-size:1.8rem;font-weight:800;color:var(--em);margin-bottom:.8rem}
+.form-success p{color:var(--slate2);line-height:1.7}
+
+/* ── Footer ── */
+footer{
+  border-top:1px solid rgba(255,255,255,.05);
+  padding:4rem 3.5rem 2rem;
+}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr;gap:4rem;margin-bottom:3rem}
+.footer-brand{font-family:var(--font-head);font-size:1.4rem;font-weight:800;color:var(--white);margin-bottom:.8rem}
+.footer-brand span{color:var(--em)}
+.footer-desc{color:var(--slate);font-size:.88rem;line-height:1.7}
+.footer-col h4{font-size:.82rem;text-transform:uppercase;letter-spacing:1.2px;color:var(--slate);margin-bottom:1rem}
+.footer-col a{display:block;color:var(--slate2);font-size:.9rem;text-decoration:none;margin-bottom:.5rem;transition:color .2s;cursor:none}
+.footer-col a:hover{color:var(--em)}
+.footer-bottom{
+  display:flex;justify-content:space-between;align-items:center;
+  padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.05);
+  font-size:.82rem;color:var(--slate);
+}
+.footer-em{color:var(--em);font-family:var(--font-mono)}
+
+/* ── Divider ── */
+.em-divider{height:1px;background:linear-gradient(90deg, transparent, rgba(16,185,129,.3), transparent);margin:0}
+
+/* ── CTA banner ── */
+.cta-banner{
+  background:linear-gradient(135deg, rgba(16,185,129,.08), rgba(17,34,64,.5));
+  border:1px solid rgba(16,185,129,.15);border-radius:16px;
+  padding:3.5rem;text-align:center;margin:0 3.5rem;
+}
+.cta-banner h2{font-family:var(--font-head);font-size:2.5rem;font-weight:800;letter-spacing:-1px;margin-bottom:.8rem}
+.cta-banner p{color:var(--slate2);margin-bottom:2rem;font-size:1rem}
+
+/* ── Scrolled nav ── */
+nav.scrolled{padding:.9rem 3.5rem;box-shadow:0 4px 30px rgba(0,0,0,.3)}
+
+/* ── Reveal animation ── */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease, transform .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+@media(max-width:768px){
+  nav{padding:1rem 1.5rem}
+  .nav-links{display:none}
+  .hero{padding:7rem 1.5rem 3rem}
+  .hero h1{font-size:2.4rem}
+  .hero-stats{gap:1.5rem;flex-wrap:wrap}
+  section{padding:3.5rem 1.5rem}
+  .grid-asym{grid-template-columns:1fr}
+  .footer-top{grid-template-columns:1fr}
+  .cta-banner{margin:0 1.5rem;padding:2.5rem 1.5rem}
+  footer{padding:3rem 1.5rem 2rem}
+  .form-row{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-logo">Digi<span>Nurture</span></div>
+  <div class="nav-links">
+    <button class="nav-link active" onclick="showPage('home',this)">Home</button>
+    <button class="nav-link" onclick="showPage('agritech',this)">AgriTech</button>
+    <button class="nav-link" onclick="showPage('legal',this)">Legal & RE</button>
+    <button class="nav-link" onclick="showPage('impact',this)">Impact Lab</button>
+    <button class="nav-link" onclick="showPage('workflow',this)">Process</button>
+    <button class="nav-cta" onclick="showPage('audit',this)">Request Audit →</button>
+  </div>
+</nav>
+
+<!-- ════════════ HOME ════════════ -->
+<div id="page-home" class="page active">
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="hero-content">
+      <div class="hero-badge">◉ Systems Online — 2026 Edition</div>
+      <h1>Where <em>Engineering</em><br/>Meets Growth.</h1>
+      <p class="hero-sub">From Hackathon-winning logic to enterprise-grade automation, DigiNurture builds the technical infrastructure for 2026's market leaders.</p>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="showPage('audit')">Request a Systems Audit</button>
+        <button class="btn-ghost" onclick="showPage('impact')">View Impact Lab →</button>
+      </div>
+      <p class="hero-note">// No commitment. Deep technical insights.</p>
+      <div class="hero-stats">
+        <div class="stat-item"><div class="stat-num">90%</div><div class="stat-label">Inquiry Automation Rate</div></div>
+        <div class="stat-item"><div class="stat-num">24/7</div><div class="stat-label">AI Lead Capture</div></div>
+        <div class="stat-item"><div class="stat-num">0ms</div><div class="stat-label">Response Latency Target</div></div>
+        <div class="stat-item"><div class="stat-num">3NF</div><div class="stat-label">Data Architecture Standard</div></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="em-divider"></div>
+
+  <!-- Value Prop -->
+  <section>
+    <div class="section-tag">Core Capability</div>
+    <h2 class="section-title reveal">We <em>Architect</em> the Systems<br/>that Scale Your Business.</h2>
+    <p class="section-body reveal">From AgriTech Decision Engines to Legal AI Intake, we replace manual labor with high-performance automation. We don't just build websites — we engineer revenue-generating ecosystems.</p>
+    <div class="grid-3">
+      <div class="glass-card reveal">
+        <div class="card-icon">🌱</div>
+        <div class="card-title">AI-Intake Systems</div>
+        <div class="card-body">Fully automated lead qualification pipelines. Captures, scores, and routes high-value prospects 24/7 without human intervention.</div>
+        <div class="card-em">// Never miss a $10k lead again.</div>
+      </div>
+      <div class="glass-card reveal">
+        <div class="card-icon">🧠</div>
+        <div class="card-title">Recommendation Engines</div>
+        <div class="card-body">Predictive logic tuned for complex, domain-specific industries. AgriTech, Legal, Real Estate — precision at scale.</div>
+        <div class="card-em">// Predictive logic for complex industries.</div>
+      </div>
+      <div class="glass-card reveal">
+        <div class="card-icon">⚡</div>
+        <div class="card-title">Full-Stack Presence</div>
+        <div class="card-body">MERN/SQL architectures built for speed, security, and conversion. Zero-latency performance on production-grade infrastructure.</div>
+        <div class="card-em">// Speed and security of MERN-stack.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="em-divider"></div>
+
+  <!-- Service Matrix -->
+  <section>
+    <div class="section-tag">Service Matrix</div>
+    <h2 class="section-title reveal">What We <em>Deploy</em></h2>
+    <div class="glass-card reveal" style="margin-top:2rem">
+      <div class="service-row">
+        <div class="service-num">01</div>
+        <div><div class="service-name">AI-Intake & Lead Triage Systems</div><div class="service-desc">End-to-end automated reception — qualify, route, schedule. <span class="service-tag">Never miss a $10k lead again.</span></div></div>
+      </div>
+      <div class="service-row">
+        <div class="service-num">02</div>
+        <div><div class="service-name">Custom Recommendation Engines</div><div class="service-desc">Domain-trained prediction models for agriculture, legal, real estate, and high-growth local verticals. <span class="service-tag">Predictive logic for complex industries.</span></div></div>
+      </div>
+      <div class="service-row">
+        <div class="service-num">03</div>
+        <div><div class="service-name">Full-Stack Web Presence</div><div class="service-desc">MERN/SQL architectures, responsive UI, and CRM integrations. <span class="service-tag">Built with the speed and security of enterprise infrastructure.</span></div></div>
+      </div>
+      <div class="service-row">
+        <div class="service-num">04</div>
+        <div><div class="service-name">Data Security & Sovereign Infrastructure</div><div class="service-desc">End-to-end encryption, impenetrable logic layers, zero-leak guarantee. <span class="service-tag">Your IP stays yours.</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="em-divider"></div>
+
+  <!-- Nurture-Logic Preview -->
+  <section>
+    <div class="section-tag">The Nurture-Logic Workflow</div>
+    <h2 class="section-title reveal">How We Engineer <em>Your Scale</em></h2>
+    <div class="process-steps">
+      <div class="process-step reveal">
+        <div class="step-num">01</div>
+        <div class="step-title">Data Ingestion</div>
+        <div class="step-body">Securely collecting firm-specific data. We map your exact operational requirements, workflows, and bottlenecks.</div>
+      </div>
+      <div class="process-step reveal">
+        <div class="step-num">02</div>
+        <div class="step-title">Model Training</div>
+        <div class="step-body">Custom-refining AI models for zero-error logic. No hallucinations. Precise execution tuned to your domain.</div>
+      </div>
+      <div class="process-step reveal">
+        <div class="step-num">03</div>
+        <div class="step-title">Full-Stack Execution</div>
+        <div class="step-body">Deploying via MERN/SQL architectures for high-speed, zero-latency performance. Live. Monitored. Optimized.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="em-divider"></div>
+
+  <!-- CTA Banner -->
+  <div class="cta-banner reveal">
+    <h2>Stop Losing Capital<br/>to <em style="font-style:normal;color:var(--em)">Inefficiency.</em></h2>
+    <p>One systems audit. Unlimited clarity on where automation can unlock your growth.</p>
+    <button class="btn-primary" onclick="showPage('audit')" style="font-size:1rem;padding:.9rem 2.5rem">Request a Systems Audit →</button>
+  </div>
+  <br/><br/>
+
+  <div class="em-divider"></div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand">Digi<span>Nurture</span></div>
+        <p class="footer-desc">Engineering the technical infrastructure for 2026's market leaders. From AgriTech to Legal — precision automation at scale.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Solutions</h4>
+        <a onclick="showPage('agritech')">AgriTech & Enterprise</a>
+        <a onclick="showPage('legal')">Legal & Real Estate</a>
+        <a onclick="showPage('impact')">Impact Laboratory</a>
+        <a onclick="showPage('workflow')">Nurture-Logic</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a onclick="showPage('audit')">Request Audit</a>
+        <a>Data Security</a>
+        <a>About</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 DigiNurture. All rights reserved.</span>
+      <span class="footer-em">// Built with Nurture-Logic™</span>
+    </div>
+  </footer>
+</div>
+
+<!-- ════════════ AGRITECH ════════════ -->
+<div id="page-agritech" class="page">
+  <section class="hero" style="min-height:70vh">
+    <div class="hero-bg"></div><div class="hero-grid"></div>
+    <div class="orb orb1" style="background:rgba(16,185,129,.09)"></div>
+    <div class="hero-content">
+      <div class="hero-badge">◉ Industry Solution — AgriTech & Enterprise</div>
+      <h1>Precision Automation for the <em>Future of Agriculture.</em></h1>
+      <p class="hero-sub">Empower your data. We engineer complex recommendation systems and automated advisory tools that scale farm-level expertise globally.</p>
+      <button class="btn-primary" onclick="showPage('audit')">Request a Technical Audit</button>
+    </div>
+  </section>
+  <div class="em-divider"></div>
+  <section>
+    <div class="section-tag">The Challenge</div>
+    <h2 class="section-title reveal">The Information <em>Bottleneck.</em></h2>
+    <div class="grid-asym">
+      <div>
+        <p class="section-body reveal">Agronomists and technical teams are overwhelmed. We build the decision engines that instantly synthesize soil data, crop history, and situational variables to deliver real-time, zero-error support to farmers at scale.</p>
+        <div class="glass-card reveal" style="margin-top:2rem">
+          <div class="card-em" style="font-size:.9rem;color:var(--em2)">✦ Feature Highlight</div>
+          <p style="color:var(--slate2);margin-top:.8rem;line-height:1.8">Automated <strong style="color:var(--white)">90% of technical farmer inquiries</strong> via custom AI, returning deep, localized agronomic insights in seconds — without compromising accuracy.</p>
+        </div>
+      </div>
+      <div class="grid-3" style="grid-template-columns:1fr;margin-top:0">
+        <div class="glass-card reveal"><div class="card-icon">🌾</div><div class="card-title">Soil Data Synthesis</div><div class="card-body">Real-time processing of soil composition, moisture, and nutrient data for hyper-local recommendations.</div></div>
+        <div class="glass-card reveal"><div class="card-icon">📊</div><div class="card-title">Crop History Models</div><div class="card-body">Historical yield analysis fed into predictive models for optimal planting and intervention cycles.</div></div>
+        <div class="glass-card reveal"><div class="card-icon">🛰️</div><div class="card-title">Scalable Advisory</div><div class="card-body">One expert's knowledge. Infinite reach. Deployed via API to serve thousands of farmers simultaneously.</div></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ════════════ LEGAL ════════════ -->
+<div id="page-legal" class="page">
+  <section class="hero" style="min-height:70vh">
+    <div class="hero-bg"></div><div class="hero-grid"></div>
+    <div class="orb orb1"></div>
+    <div class="hero-content">
+      <div class="hero-badge">◉ Industry Solution — Legal & Real Estate</div>
+      <h1>High-Stakes Lead Triage<br/>for <em>Elite Firms.</em></h1>
+      <p class="hero-sub">While your competitors sleep, your AI automated receptionist qualifies, routes, and secures high-value clients around the clock.</p>
+      <button class="btn-primary" onclick="showPage('audit')">Deploy Your Intake System</button>
+    </div>
+  </section>
+  <div class="em-divider"></div>
+  <section>
+    <div class="section-tag">The Challenge</div>
+    <h2 class="section-title reveal">The <em>Speed-to-Lead</em> Disadvantage.</h2>
+    <div class="grid-asym">
+      <div>
+        <p class="section-body reveal">A missed call at 8 PM is a $10k case lost forever. We deploy custom MERN/AI infrastructures that turn passive digital presence into aggressive, 24/7 lead capture machines.</p>
+        <div class="glass-card reveal" style="margin-top:2rem">
+          <div class="card-em" style="font-size:.9rem;color:var(--em2)">✦ Feature Highlight</div>
+          <p style="color:var(--slate2);margin-top:.8rem;line-height:1.8">Our AI Intake models interact logically, <strong style="color:var(--white)">pre-qualifying prospects</strong> based on your unique criteria, setting appointments directly into your CRM. <strong style="color:var(--em)">You arrive at the office with a booked calendar.</strong></p>
+        </div>
+      </div>
+      <div class="grid-3" style="grid-template-columns:1fr;margin-top:0">
+        <div class="glass-card reveal"><div class="card-icon">⚖️</div><div class="card-title">Zero-Drop Intake</div><div class="card-body">Every inbound lead captured, classified, and routed — regardless of time or channel.</div></div>
+        <div class="glass-card reveal"><div class="card-icon">📅</div><div class="card-title">Autonomous Scheduling</div><div class="card-body">Direct CRM integration. Appointments set without human coordination. Zero scheduling friction.</div></div>
+        <div class="glass-card reveal"><div class="card-icon">💰</div><div class="card-title">Revenue Recovery</div><div class="card-body">Recapture thousands in previously lost revenue from after-hours and overflow inquiries.</div></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ════════════ IMPACT LAB ════════════ -->
+<div id="page-impact" class="page">
+  <section style="padding-top:7rem">
+    <div class="section-tag">The Impact Laboratory</div>
+    <h2 class="section-title reveal">Proven Logic. <em>Measurable Growth.</em></h2>
+    <p class="section-body reveal">Real deployments. Real outcomes. Each case study represents a system engineered from first principles.</p>
+    <div class="grid-2" style="margin-top:3rem">
+      <div class="case-card reveal">
+        <div class="case-header">
+          <div class="case-tag">AgriTech · Recommendation Engine</div>
+          <div class="case-title">Automated Agronomic Advisory System</div>
+          <div class="case-sub">Enterprise AgriTech · Farmer Decision Support</div>
+        </div>
+        <div class="case-body">
+          <div class="case-stat">
+            <div class="case-metric"><div class="metric-val">90%</div><div class="metric-lbl">Inquiry Automation</div></div>
+            <div class="case-metric"><div class="metric-val">0ms</div><div class="metric-lbl">Response Target</div></div>
+            <div class="case-metric"><div class="metric-val">∞</div><div class="metric-lbl">Scalability</div></div>
+          </div>
+          <p class="case-desc"><em style="color:var(--em);font-style:normal">Vibecoded.</em> Automated 90% of technical farmer inquiries via custom AI without compromising agronomic accuracy. Deep, localized insights delivered in real-time.</p>
+        </div>
+      </div>
+      <div class="case-card reveal">
+        <div class="case-header">
+          <div class="case-tag">Legal & Real Estate · AI Intake</div>
+          <div class="case-title">Zero-Drop Lead Capture Pipeline</div>
+          <div class="case-sub">Law Firm + Real Estate Agency · 24/7 Intake</div>
+        </div>
+        <div class="case-body">
+          <div class="case-stat">
+            <div class="case-metric"><div class="metric-val">24/7</div><div class="metric-lbl">Active Coverage</div></div>
+            <div class="case-metric"><div class="metric-val">$10k+</div><div class="metric-lbl">Avg. Lead Value</div></div>
+            <div class="case-metric"><div class="metric-val">0</div><div class="metric-lbl">Dropped Leads</div></div>
+          </div>
+          <p class="case-desc"><em style="color:var(--em);font-style:normal">Zero-Drop Funnel.</em> Automated 24/7 Lead Intake & Appointment Scheduling, recapturing thousands in previously lost revenue from after-hours inquiries.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ════════════ WORKFLOW ════════════ -->
+<div id="page-workflow" class="page">
+  <section style="padding-top:7rem">
+    <div class="section-tag">Platform & Process</div>
+    <h2 class="section-title reveal">The <em>Nurture-Logic™</em> Workflow</h2>
+    <p class="section-body reveal">A three-phase engineering framework. Every client engagement follows this precision sequence.</p>
+    <div class="process-steps reveal" style="margin-top:3rem">
+      <div class="process-step">
+        <div class="step-num">01</div>
+        <div class="step-title">Data Ingestion</div>
+        <div class="step-body">Secure collection of firm-specific operational data. We map workflows, identify bottlenecks, and define success metrics with surgical precision.</div>
+      </div>
+      <div class="process-step">
+        <div class="step-num">02</div>
+        <div class="step-title">Model Training</div>
+        <div class="step-body">Custom-refining AI models for zero-error, domain-specific logic. No hallucinations. No generic outputs. Just precise execution trained on your reality.</div>
+      </div>
+      <div class="process-step">
+        <div class="step-num">03</div>
+        <div class="step-title">Full-Stack Execution</div>
+        <div class="step-body">Deployment via MERN/SQL architectures. High-speed, zero-latency, production-grade. Monitored, optimized, and scaled with your growth.</div>
+      </div>
+    </div>
+    <div class="em-divider" style="margin:3rem 0"></div>
+    <div class="section-tag">Security Guarantee</div>
+    <h2 class="section-title reveal">The <em>"Zero-Leak"</em> Guarantee.</h2>
+    <p class="section-body reveal">We treat client data with the exact same precision used in our enterprise AgriTech recommendation systems.</p>
+    <div class="security-grid reveal">
+      <div class="sec-item"><div class="sec-icon">🔐</div><div class="sec-text"><div class="sec-title">End-to-End Encryption</div><div class="sec-body">All data in transit and at rest is encrypted using industry-standard protocols.</div></div></div>
+      <div class="sec-item"><div class="sec-icon">🛡️</div><div class="sec-text"><div class="sec-title">Impenetrable Logic Layers</div><div class="sec-body">Multi-layer access control and audit trails on every data operation.</div></div></div>
+      <div class="sec-item"><div class="sec-icon">🏛️</div><div class="sec-text"><div class="sec-title">Sovereign Data Handling</div><div class="sec-body">Your IP stays yours. No data sharing, no training on client data without consent.</div></div></div>
+      <div class="sec-item"><div class="sec-icon">⚡</div><div class="sec-text"><div class="sec-title">Zero-Latency Architecture</div><div class="sec-body">MERN/SQL infrastructure engineered for sub-100ms response on all production systems.</div></div></div>
+    </div>
+  </section>
+</div>
+
+<!-- ════════════ AUDIT FORM ════════════ -->
+<div id="page-audit" class="page">
+  <section style="padding-top:7rem">
+    <div class="section-tag">Conversion Action</div>
+    <h2 class="section-title reveal" style="margin-bottom:3rem">Request a <em>Systems Audit</em></h2>
+    <div class="audit-wrap">
+      <div class="form-steps-bar">
+        <div class="fstep active" id="fs1"></div>
+        <div class="fstep" id="fs2"></div>
+        <div class="fstep" id="fs3"></div>
+      </div>
+
+      <!-- Step 1 -->
+      <div class="form-panel active" id="fp1">
+        <div class="form-step-title">About Your Business</div>
+        <div class="form-step-sub">Tell us who you are and what industry you operate in.</div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Full Name *</label><input class="form-input" placeholder="Rajesh Kumar" id="f-name"/></div>
+          <div class="form-group"><label class="form-label">Company Name *</label><input class="form-input" placeholder="Acme Corp" id="f-company"/></div>
+        </div>
+        <div class="form-group"><label class="form-label">Email Address *</label><input class="form-input" type="email" placeholder="you@company.com" id="f-email"/></div>
+        <div class="form-group">
+          <label class="form-label">Industry *</label>
+          <select class="form-select" id="f-industry">
+            <option value="">Select your industry...</option>
+            <option>AgriTech / Agriculture</option>
+            <option>Legal Services</option>
+            <option>Real Estate</option>
+            <option>High-Growth Local Business</option>
+            <option>Enterprise / Other</option>
+          </select>
+        </div>
+        <div class="form-nav">
+          <div></div>
+          <button class="btn-primary" onclick="auditNext(1)">Next: Operations →</button>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="form-panel" id="fp2">
+        <div class="form-step-title">Current Operations</div>
+        <div class="form-step-sub">Help us understand where automation can unlock your growth.</div>
+        <div class="form-group">
+          <label class="form-label">Biggest operational bottleneck?</label>
+          <select class="form-select" id="f-bottleneck">
+            <option value="">Select...</option>
+            <option>Lead qualification & intake</option>
+            <option>Appointment scheduling</option>
+            <option>Technical advisory & support</option>
+            <option>Data processing & reporting</option>
+            <option>Customer follow-up & nurturing</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Monthly leads / inquiries volume?</label>
+          <select class="form-select">
+            <option>Under 50</option>
+            <option>50–200</option>
+            <option>200–1000</option>
+            <option>1000+</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Current tech stack (if any)</label>
+          <input class="form-input" placeholder="e.g. WordPress, Salesforce, custom CRM..."/>
+        </div>
+        <div class="form-nav">
+          <button class="btn-ghost" onclick="auditBack(2)">← Back</button>
+          <button class="btn-primary" onclick="auditNext(2)">Next: Goals →</button>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="form-panel" id="fp3">
+        <div class="form-step-title">Your Growth Goals</div>
+        <div class="form-step-sub">What does success look like for you?</div>
+        <div class="form-group">
+          <label class="form-label">What's your primary goal? *</label>
+          <select class="form-select">
+            <option>Automate lead intake & qualification</option>
+            <option>Build custom AI recommendation system</option>
+            <option>Full-stack web presence & CRM</option>
+            <option>Data security & infrastructure audit</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Anything else we should know?</label>
+          <textarea class="form-textarea" placeholder="Describe your situation, timeline, or any specific requirements..."></textarea>
+        </div>
+        <div class="form-nav">
+          <button class="btn-ghost" onclick="auditBack(3)">← Back</button>
+          <button class="btn-primary" onclick="auditSubmit()">Submit — Get My Audit →</button>
+        </div>
+      </div>
+
+      <!-- Success -->
+      <div class="form-panel" id="fp-success">
+        <div class="form-success">
+          <div class="success-icon">✅</div>
+          <h3>Audit Request Received.</h3>
+          <p>Our engineering team will analyze your submission and reach out within <strong style="color:var(--white)">24 hours</strong> with deep technical insights — at no commitment.<br/><br/><span style="color:var(--em);font-family:var(--font-mono);font-size:.85rem">// Nurture-Logic™ is now processing your brief.</span></p>
+          <button class="btn-ghost" style="margin-top:2rem" onclick="showPage('home')">← Back to Home</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>
+
+<script>
+// Cursor
+const cur = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+document.addEventListener('mousemove', e => {
+  cur.style.left = e.clientX + 'px';
+  cur.style.top = e.clientY + 'px';
+  setTimeout(() => {
+    ring.style.left = e.clientX + 'px';
+    ring.style.top = e.clientY + 'px';
+  }, 60);
+});
+document.querySelectorAll('button,a,[onclick]').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cur.style.transform = 'translate(-50%,-50%) scale(2)';
+    ring.style.transform = 'translate(-50%,-50%) scale(1.4)';
+  });
+  el.addEventListener('mouseleave', () => {
+    cur.style.transform = 'translate(-50%,-50%) scale(1)';
+    ring.style.transform = 'translate(-50%,-50%) scale(1)';
+  });
+});
+
+// Nav scroll
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// Page routing
+function showPage(name, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  document.querySelectorAll('.nav-link').forEach(b => b.classList.remove('active'));
+  if (btn && btn.classList) btn.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  setTimeout(revealAll, 100);
+}
+
+// Scroll reveal
+function revealAll() {
+  document.querySelectorAll('.reveal').forEach((el, i) => {
+    setTimeout(() => el.classList.add('visible'), i * 80);
+  });
+}
+window.addEventListener('scroll', () => {
+  document.querySelectorAll('.reveal:not(.visible)').forEach(el => {
+    if (el.getBoundingClientRect().top < window.innerHeight - 80) el.classList.add('visible');
+  });
+});
+setTimeout(revealAll, 200);
+
+// Audit form
+function auditNext(step) {
+  if (step === 1) {
+    const name = document.getElementById('f-name').value;
+    const email = document.getElementById('f-email').value;
+    const industry = document.getElementById('f-industry').value;
+    if (!name || !email || !industry) { alert('Please fill all required fields.'); return; }
+  }
+  document.getElementById('fp' + step).classList.remove('active');
+  document.getElementById('fp' + (step+1)).classList.add('active');
+  document.getElementById('fs' + step).classList.add('done');
+  if (step + 1 <= 3) document.getElementById('fs' + (step+1)).classList.add('active');
+}
+function auditBack(step) {
+  document.getElementById('fp' + step).classList.remove('active');
+  document.getElementById('fp' + (step-1)).classList.add('active');
+  document.getElementById('fs' + (step-1)).classList.remove('done');
+  document.getElementById('fs' + step).classList.remove('active','done');
+}
+function auditSubmit() {
+  document.getElementById('fp3').classList.remove('active');
+  document.getElementById('fp-success').classList.add('active');
+  document.getElementById('fs3').classList.add('done');
+}
+</script>
+</body>
+</html>
