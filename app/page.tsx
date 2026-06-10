@@ -62,10 +62,10 @@ export default function Home() {
       <div className="em-divider" />
 
       {/* Service Matrix */}
-      <section>
-        <div className="section-tag">Service Matrix</div>
-        <h2 className="section-title">What We <em>Deploy</em></h2>
-        <div className="glass-card" style={{ marginTop: '2rem' }}>
+      <section id="services">
+        <div className="section-tag">Services</div>
+        <h2 className="section-title">Services We <em>Provide</em></h2>
+        <div className="glass-card" style={{ marginTop: '3.5rem' }}>
           <div className="service-row">
             <div className="service-num">01</div>
             <div><div className="service-name">AI-Intake &amp; Lead Triage Systems</div><div className="service-desc">End-to-end automated reception — qualify, route, schedule. <span className="service-tag">Never miss a $10k lead again.</span></div></div>
